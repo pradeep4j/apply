@@ -1,0 +1,200 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Pradeep — Job Search Launcher</title>
+<link rel="stylesheet" href="style.css" />
+</head>
+<body>
+<main class="wrap">
+  <header class="hero">
+    <h1>Job Search Launcher</h1>
+    <p class="sub">
+      Pradeep Kumar Maurya · Full Stack Team Lead / Manager · 17 yrs overall
+      · LAMP 17 yrs · MERN + React Native 6 yrs · AI/LLM 3 yrs
+    </p>
+  </header>
+
+  <section class="card stack-card">
+    <h2>1. Stack — pick one</h2>
+    <p class="hint">
+      Only one stack is searched at a time. The choice decides which lead/manager profiles exist,
+      what experience is sent to each portal, and which technologies are excluded from results.
+    </p>
+    <div class="stack-picker" id="stackPicker">
+      <label class="stack-opt">
+        <input type="radio" name="stack" value="mern" checked />
+        <span class="stack-body">
+          <strong>MERN + React Native</strong>
+          <em>React · Node · Next · React Native · AI/LLM</em>
+          <small class="exp-note" data-exp="mern"></small>
+        </span>
+      </label>
+      <label class="stack-opt">
+        <input type="radio" name="stack" value="lamp" />
+        <span class="stack-body">
+          <strong>LAMP / PHP</strong>
+          <em>Laravel · PHP · MySQL · AI/LLM</em>
+          <small class="exp-note" data-exp="lamp"></small>
+        </span>
+      </label>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>2. Date range</h2>
+    <p class="hint">
+      Portals only filter by "posted in last N days" — your <em>from</em> date is converted to
+      days-since-today and snapped to the closest supported window (1, 3, 7, 15, 30 days).
+      The <em>to</em> date is informational; portals don't accept upper-bound filters.
+    </p>
+    <div class="row">
+      <label>From date <input type="date" id="fromDate" /></label>
+      <label>To date <input type="date" id="toDate" /></label>
+      <div class="quick">
+        <button type="button" data-days="1">Last 24h</button>
+        <button type="button" data-days="3">Last 3 days</button>
+        <button type="button" data-days="7">Last 7 days</button>
+        <button type="button" data-days="15">Last 15 days</button>
+        <button type="button" data-days="30">Last 30 days</button>
+      </div>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>3. Job type</h2>
+    <div class="chips" id="jobTypes">
+      <label><input type="checkbox" value="fulltime" checked /> Full-time (preferred)</label>
+      <label><input type="checkbox" value="remote" checked /> Remote</label>
+      <label><input type="checkbox" value="contract" /> Contract</label>
+      <label><input type="checkbox" value="freelance" /> Freelance</label>
+      <label><input type="checkbox" value="parttime" /> Part-time</label>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>4. Location &amp; experience</h2>
+    <p class="hint">
+      Experience auto-fills from the stack you picked above. AI/LLM profiles always
+      send their own <span id="aiExpNote">3 yrs</span> regardless of these values.
+    </p>
+    <div class="row">
+      <label>Primary location
+        <select id="location">
+          <option value="delhi-ncr" selected>Delhi / NCR</option>
+          <option value="delhi">Delhi</option>
+          <option value="noida">Noida</option>
+          <option value="gurgaon">Gurgaon</option>
+          <option value="ghaziabad">Ghaziabad</option>
+          <option value="bangalore">Bangalore</option>
+          <option value="hyderabad">Hyderabad</option>
+          <option value="pune">Pune</option>
+          <option value="mumbai">Mumbai</option>
+          <option value="india">All India</option>
+          <option value="anywhere">Anywhere (international)</option>
+        </select>
+      </label>
+      <label>Min experience (yrs) <input type="number" id="minExp" min="0" max="30" /></label>
+      <label>Max experience (yrs) <input type="number" id="maxExp" min="0" max="30" /></label>
+    </div>
+  </section>
+
+  <section class="card">
+    <h2>5. Search profiles <span class="stack-tag" id="stackTag"></span></h2>
+    <p class="hint">
+      Lead / manager / architect titles only — no developer-level roles.
+      Each checked profile fires as a separate search on every selected portal.
+    </p>
+    <div class="chips" id="profiles"></div>
+
+    <label class="strict-toggle">
+      <input type="checkbox" id="strict" checked />
+      <span>
+        <strong>Strict exclusions — LinkedIn, Indeed, TimesJobs, Upwork</strong>
+        <small>
+          Adds <code>NOT Salesforce NOT SAP NOT Mainframe …</code> to the search, and
+          anchors a technology onto any title that doesn't already name one.
+          <b>Uncheck this if a search returns nothing</b> — you'll get the bare quoted
+          phrase, which is the real defence anyway: a "Java Lead" posting simply does
+          not contain the phrase "MERN Stack Lead". <b>Java, .NET, C# and Python are
+          deliberately NOT excluded</b> — a genuine MERN lead role often lists them
+          elsewhere in the JD, and excluding them returned zero results.
+          Only these four portals parse boolean; the rest match literally.
+        </small>
+      </span>
+    </label>
+  </section>
+
+  <section class="card">
+    <h2>6. Job portals</h2>
+    <p class="hint">
+      Every portal here was tested against its real behaviour, not its documentation.
+      <span class="badge-inline bool">boolean</span> portals parse quotes and AND/OR/NOT, so the
+      strict filter works there. <span class="badge-inline slug">literal</span> portals ignore
+      boolean syntax entirely — those are narrowed by their own native filters instead
+      (Foundit <code>functions=it</code>, Shine <code>findustry=18</code>, WWR engineering
+      categories), or not at all where none exists. Toptal was removed: it has no job board,
+      only a screening funnel.
+    </p>
+    <div class="chips" id="portals">
+      <label><input type="checkbox" value="naukri" checked /> Naukri</label>
+      <label><input type="checkbox" value="foundit" checked /> Foundit (Monster)</label>
+      <label><input type="checkbox" value="linkedin" checked /> LinkedIn Jobs</label>
+      <label><input type="checkbox" value="indeed" checked /> Indeed India</label>
+      <label><input type="checkbox" value="hirist" checked /> Hirist</label>
+      <label><input type="checkbox" value="timesjobs" checked /> TimesJobs</label>
+      <label><input type="checkbox" value="shine" /> Shine</label>
+      <label><input type="checkbox" value="glassdoor" /> Glassdoor India</label>
+      <label><input type="checkbox" value="iimjobs" /> iimjobs</label>
+      <label><input type="checkbox" value="cutshort" /> Cutshort</label>
+      <label><input type="checkbox" value="instahyre" /> Instahyre</label>
+      <label><input type="checkbox" value="wellfound" checked /> Wellfound (AngelList)</label>
+      <label><input type="checkbox" value="weworkremotely" checked /> We Work Remotely</label>
+      <label><input type="checkbox" value="remoteok" checked /> Remote OK</label>
+      <label><input type="checkbox" value="upwork" checked /> Upwork</label>
+      <label><input type="checkbox" value="freelancer" /> Freelancer.com</label>
+    </div>
+
+    <div class="naukri-lookup">
+      <label>
+        Naukri department ID
+        <input type="text" id="naukriFn" inputmode="numeric" placeholder="e.g. 5" />
+      </label>
+      <p>
+        <strong>One 15-second lookup — then Naukri filters to IT properly.</strong>
+        Naukri's <code>functionAreaIdGid</code> ("Department") is the right filter, but its
+        IT code is served by a gated API and could not be verified — and a wrong ID silently
+        returns the wrong vertical, which is worse than none. So: open any
+        <a href="https://www.naukri.com/software-jobs" target="_blank" rel="noopener noreferrer">Naukri search</a>,
+        tick <em>Department → "Engineering - Software &amp; QA"</em>, then copy the number after
+        <code>functionAreaIdGid=</code> in your address bar and paste it here. Saved to this
+        browser; left blank the filter is simply omitted.
+      </p>
+    </div>
+  </section>
+
+  <section class="actions">
+    <button id="generate" type="button" class="primary">Scan & Match Jobs</button>
+    <button id="reset" type="button" class="ghost">Reset</button>
+    <span id="loadingIndicator" style="display: none; margin-left: 15px;">Scanning portals & matching with CV...</span>
+  </section>
+
+  <p class="popup-tip" id="popupTip" hidden></p>
+
+  <section class="card" id="resultsCard" hidden>
+    <h2>Results <span class="stack-tag" id="resultsTag"></span></h2>
+    <p class="hint">
+      Click any link to open in a new tab. Log in on the portal — most will return you to the
+      search page with filters applied so you can apply directly.
+    </p>
+    <div id="results"></div>
+  </section>
+
+  <footer>
+    <small>Built locally · No data leaves this page · Open <code>index.html</code> in any browser.</small>
+  </footer>
+</main>
+<script src="script.js"></script>
+</body>
+</html>

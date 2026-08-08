@@ -1,0 +1,16 @@
+version: '3.8'
+
+services:
+  apply-web:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: apply_job_matcher_web
+    restart: always
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+      - PORT=3000
+    volumes:
+      - ./Pradeep_Kumar_Maurya.pdf:/app/Pradeep_Kumar_Maurya.pdf:ro

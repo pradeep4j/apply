@@ -1,0 +1,38 @@
+name: Apply Web Dashboard CI Verification
+
+on:
+  push:
+    branches: [ main, master ]
+  pull_request:
+    branches: [ main, master ]
+  workflow_dispatch:
+
+jobs:
+  build-and-verify:
+    name: Verify Node Code & Docker Build
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout Repository Code
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+          cache: 'npm'
+
+      - name: Install Dependencies
+        run: npm install
+
+      - name: Verify CV PDF Exists
+        run: |
+          if [ -f "Pradeep_Kumar_Maurya.pdf" ]; then
+            echo "✅ CV PDF verified at Pradeep_Kumar_Maurya.pdf"
+          else
+            echo "❌ ERROR: Pradeep_Kumar_Maurya.pdf is missing!"
+            exit 1
+          fi
+
+      - name: Build Docker Image Locally in CI
+        run: docker build -t apply-job-matcher:latest .
