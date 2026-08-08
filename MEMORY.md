@@ -62,9 +62,20 @@ Client-side browser JavaScript (`index.html`) cannot read binary PDF files (`Pra
 * **`/Projects/apply/` (This project)**: Interactive local web UI dashboard on port 3000 for manual search, instant links, and on-screen visualization.
 * **`/Projects/apply/MCP_job_search/` (Subproject)**: Background automated cron service running every 6 hours using BullMQ + Redis + ChromaDB RAG vector deduplication + Yahoo Nodemailer application email dispatcher with PDF CV attachment.
 
+## 6. GitHub Actions Secrets & Variables Matrix
+
+| Secret / Variable | Value for Local PC | Value for Cloud Server (VPS) | Brief Explanation |
+|---|---|---|---|
+| **`VPS_HOST`** | Not Needed (Private `192.168.x.x` from `ipconfig` cannot be reached by GitHub) | Public Server IP (e.g. `142.93.xxx.xxx`) | The target server IP where your code deploys. |
+| **`VPS_USER`** | `pradeep` | `root` or `ubuntu` | The SSH username on the target server. |
+| **`VPS_SSH_KEY`** | Generated via `ssh-keygen` | Content of `~/.ssh/id_rsa` | Private SSH key allowing passwordless login. |
+| **`PORT`** | `3000` | `3000` | The web server port configured in `server.js`. |
+
+> **Key Takeaway**: For local development (`node server.js` -> `http://localhost:3000`), you only need GitHub to store your code. You do not need SSH cloud deployment secrets unless you buy a cloud VPS server in the future!
+
 ---
 
-## 6. How to Run & Troubleshoot in WSL / Linux
+## 7. How to Run & Troubleshoot in WSL / Linux
 
 ### Permission Fix (Run first if permissions error occurs):
 ```bash
