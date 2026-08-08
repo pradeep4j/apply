@@ -1,1 +1,19 @@
-MCP_job_search
+# Dependency directories
+node_modules/
+
+# Environment files
+.env
+.env.local
+
+# Sub-projects
+MCP_job_search/
+
+# Temporary session & agent folders
+1b424eca-9d94-4357-a589-8875791c8a5c/
+.claude/
+scratch/
+scratch_pdf/
+
+# Debug files
+error.png
+*.log
