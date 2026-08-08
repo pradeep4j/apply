@@ -1,9 +1,12 @@
 # Dependency directories
 node_modules/
 
-# Environment files
+# Environment & Sensitive Files
 .env
 .env.local
+Pradeep_Kumar_Maurya.pdf
+MCP_Job_Search_System_Context.docx
+MCP_Job_Search_System_Context.txt
 
 # Sub-projects
 MCP_job_search/
